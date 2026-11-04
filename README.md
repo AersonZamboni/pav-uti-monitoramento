@@ -76,13 +76,17 @@ A primeira versão foi avaliada pelo professor, e a revisão trouxe aprendizados
 - **Proposta mais concreta:** meta de manutenção, cronograma, responsáveis, auditoria do dado e um plano para quando a UTI controle deixar de existir.
 - **Painel mais legível e honesto:** fontes maiores no celular, alertas com situação, separação entre evento e tendência, e aviso de que a atualização é simulada.
 
-## Minha participação
+## Créditos e participação
 
-Fui responsável por três frentes do projeto:
+Este projeto foi desenvolvido em conjunto pelo Grupo 1 (veja a seção "Equipe"). A pergunta, a análise dos dados, o storytelling, a proposta de implementação e a revisão após o feedback do professor são trabalho coletivo de todo o grupo.
 
-- **Storytelling:** construí a narrativa que conecta os dados à decisão. Ela parte do impacto da PAV para o paciente e para a equipe, apresenta os resultados e termina com a descoberta que originou a proposta: a queda só apareceu a partir de 70% de adesão, então manter o protocolo depende de acompanhar sua execução todos os dias.
-- **Dashboard:** defini, junto com o grupo, o que o painel precisava responder para cada perfil (enfermagem, coordenação, equipe médica e controle de infecção) e conduzi o desenvolvimento do protótipo interativo, construído com apoio de IA (Claude).
-- **Revisão após o feedback:** analisei cada ponto da avaliação do professor e conduzi as correções no relatório e no painel. Calibrei as conclusões para tratar o protocolo como hipótese, defini os indicadores (adesão e ventilação prolongada), refiz a estimativa de ganhos com uma base de comparação mais robusta e com parâmetros da literatura, e completei a proposta com meta de manutenção, cronograma, responsáveis e auditoria do dado.
+### Meu destaque individual: o dashboard
+
+Fui responsável pelo painel interativo:
+
+- **Concepção:** defini o que o painel precisava responder para cada perfil (enfermagem, coordenação, equipe médica e controle de infecção) e quais indicadores, metas e alertas ele deveria mostrar.
+- **Desenvolvimento:** conduzi a construção do protótipo interativo, feito com apoio de IA (Claude) a partir das decisões do grupo.
+- **Revisão após o feedback:** ajustei o painel para deixá-lo mais legível no celular e mais fiel aos dados: alertas com situação, separação entre evento e tendência, comparação com a UTI controle nos cartões e aviso de que a atualização é simulada.
 
 ## Ferramentas
 

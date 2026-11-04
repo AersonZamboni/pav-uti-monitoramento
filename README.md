@@ -78,11 +78,11 @@ A primeira versão foi avaliada pelo professor, e a revisão trouxe aprendizados
 
 ## Minha participação
 
-[Fui responsável por três frentes do projeto:
+Fui responsável por três frentes do projeto:
 
-Storytelling: construí a narrativa que conecta os dados à decisão. Ela parte do impacto da PAV para o paciente e para a equipe, apresenta os resultados e termina com a descoberta que originou a proposta: a queda só apareceu a partir de 70% de adesão, então manter o protocolo depende de acompanhar sua execução todos os dias.
-Dashboard: defini, junto com o grupo, o que o painel precisava responder para cada perfil (enfermagem, coordenação, equipe médica e controle de infecção) e conduzi o desenvolvimento do protótipo interativo, construído com apoio de IA (Claude).
-Revisão após o feedback: analisei cada ponto da avaliação do professor e conduzi as correções no relatório e no painel. Calibrei as conclusões para tratar o protocolo como hipótese, defini os indicadores (adesão e ventilação prolongada), refiz a estimativa de ganhos com uma base de comparação mais robusta e com parâmetros da literatura, e completei a proposta com meta de manutenção, cronograma, responsáveis e auditoria do dado.]
+- **Storytelling:** construí a narrativa que conecta os dados à decisão. Ela parte do impacto da PAV para o paciente e para a equipe, apresenta os resultados e termina com a descoberta que originou a proposta: a queda só apareceu a partir de 70% de adesão, então manter o protocolo depende de acompanhar sua execução todos os dias.
+- **Dashboard:** defini, junto com o grupo, o que o painel precisava responder para cada perfil (enfermagem, coordenação, equipe médica e controle de infecção) e conduzi o desenvolvimento do protótipo interativo, construído com apoio de IA (Claude).
+- **Revisão após o feedback:** analisei cada ponto da avaliação do professor e conduzi as correções no relatório e no painel. Calibrei as conclusões para tratar o protocolo como hipótese, defini os indicadores (adesão e ventilação prolongada), refiz a estimativa de ganhos com uma base de comparação mais robusta e com parâmetros da literatura, e completei a proposta com meta de manutenção, cronograma, responsáveis e auditoria do dado.
 
 ## Ferramentas
 

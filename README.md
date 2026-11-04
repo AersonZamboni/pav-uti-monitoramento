@@ -4,7 +4,7 @@
 
 > ⚠️ **Caso fictício.** Projeto acadêmico em grupo, desenvolvido na Pós-graduação em Análise de Dados e Inteligência Artificial da CESAR School. Os dados foram criados para a atividade e não representam pacientes ou hospitais reais.
 
-🔗 **[Abrir o painel interativo](https://SEU-USUARIO.github.io/pav-uti-monitoramento/)**
+🔗 **[Abrir o painel interativo](https://AersonZamboni.github.io/pav-uti-monitoramento/)**
 
 ![Tela principal do painel](tela1.jpg)
 

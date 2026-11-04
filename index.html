@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Painel de monitoramento online: higiene oral e PAV na UTI</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1c2430;--muted:#5b6675;--line:#dde2e8;--acc:#0b6bcb;--ctrl:#8b95a3;--good:#1a7f4b;--warn:#b7791f;--bad:#c0392b;--soft:#eaf2fc;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f141a;--card:#172029;--text:#e8edf2;--muted:#9aa6b4;--line:#2a3642;--acc:#4da3ff;--ctrl:#8d99a8;--good:#4cc38a;--warn:#e0a93b;--bad:#ef6b5b;--soft:#14263a}}
+:root[data-theme="dark"]{--bg:#0f141a;--card:#172029;--text:#e8edf2;--muted:#9aa6b4;--line:#2a3642;--acc:#4da3ff;--ctrl:#8d99a8;--good:#4cc38a;--warn:#e0a93b;--bad:#ef6b5b;--soft:#14263a}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 14px 40px}
+h1{font-size:21px;margin:0 0 2px}
+h2{font-size:16px;margin:0 0 8px}
+.sub{color:var(--muted);font-size:13px;margin:0}
+.tag{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 10px;color:var(--muted);margin:8px 6px 0 0}
+.sim{font-weight:600;color:var(--acc);border-color:var(--acc)}
+.callout{background:var(--soft);border-left:4px solid var(--acc);border-radius:8px;padding:12px 14px;margin:16px 0}
+.callout b{color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px}
+.months{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.months button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:5px 12px;cursor:pointer}
+.months button[aria-pressed=true]{background:var(--acc);color:#fff;border-color:var(--acc)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi .l{font-size:12.5px;color:var(--muted)}
+.kpi .v{font-size:30px;font-weight:700;line-height:1.2}
+.kpi .n{font-size:12.5px;color:var(--muted)}
+.st{font-weight:600}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+svg{width:100%;height:auto;display:block}
+svg text{fill:var(--muted);font-size:13px;font-family:inherit}
+@media (max-width:600px){svg text{font-size:12px}}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-bottom:4px}
+.leg i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.msg{font-size:17px;font-weight:700;margin:0 0 6px}
+.al{list-style:none;margin:0;padding:0}
+.al li{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px;align-items:flex-start}
+.al .txt{flex:1}
+.stt{flex:none;font-size:12px;font-weight:600;border:1px solid currentColor;border-radius:99px;padding:1px 8px;white-space:nowrap}
+.s-pend{color:var(--bad)}.s-esc{color:var(--warn)}.s-ok{color:var(--good)}
+.note{font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:6px 10px;margin:0 0 10px}
+.dif{color:var(--good);font-weight:600}
+.al li:last-child{border:0}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;margin-top:6px}
+.d-good{background:var(--good)}.d-warn{background:var(--warn)}.d-bad{background:var(--bad)}
+.turn{display:grid;grid-template-columns:62px 1fr 44px;gap:8px;align-items:center;font-size:13px;margin:6px 0}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}.bar span{display:block;height:100%}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.step{flex:1 1 150px;background:var(--soft);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.step b{display:block;color:var(--acc);margin-bottom:2px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:12.5px}
+.foot{font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Painel de monitoramento online: protocolo de higiene oral e PAV</h1>
+<p class="sub">UTI adulto · acompanhamento para equipe assistencial, equipe médica e coordenação</p>
+<span class="tag sim">Simulação: atualização prevista a cada turno</span><span class="tag">Protótipo com dados fictícios</span><span class="tag">Meta inicial: redução de 30% na densidade de PAV</span><span class="tag">Meta de manutenção: adesão ≥ 85% em todos os turnos por 90 dias</span>
+
+<div class="callout"><b>Implementação proposta: monitoramento online.</b> Os dados sugerem que o protocolo contribuiu para a redução da PAV; por isso, o passo seguinte é mantê-lo ativo e acompanhar sua execução em tempo real. Assim a equipe vê o que acontece hoje, ajusta a rotina na hora e previne danos antes que virem novos casos de PAV, em vez de descobrir o problema no relatório do mês seguinte.</div>
+
+<div class="months" id="months" role="group" aria-label="Escolha o mês"></div>
+<div class="kpis" id="kpis"></div>
+
+<div class="card">
+<p class="msg">A partir de 70% de adesão, a densidade de PAV caiu pela metade; na UTI sem protocolo, não houve mudança.</p>
+<p class="sub" style="margin-bottom:8px">Os dados mostram coincidência no tempo, não prova de causa. Densidade = casos novos ÷ pacientes-dia em VM × 1.000.</p>
+<div class="leg"><span><i style="background:var(--acc)"></i>UTI com protocolo</span><span><i style="background:var(--ctrl)"></i>UTI controle (sem protocolo)</span><span><i style="background:var(--warn)"></i>Meta (≤ 16,67)</span></div>
+<div id="c1"></div>
+<h2 style="margin-top:10px">Adesão ao protocolo na UTI com protocolo (%)</h2>
+<div id="c2"></div>
+</div>
+
+<div class="grid2">
+<div class="card"><h2>Taxa de VM &gt; 7 dias (% dos pacientes em VM)</h2><div class="leg"><span><i style="background:var(--acc)"></i>Com protocolo</span><span><i style="background:var(--ctrl)"></i>Controle</span></div><div id="c3"></div></div>
+<div class="card"><h2>Taxa de VM &gt; 14 dias (% dos pacientes em VM)</h2><div class="leg"><span><i style="background:var(--acc)"></i>Com protocolo</span><span><i style="background:var(--ctrl)"></i>Controle</span></div><div id="c4"></div></div>
+</div>
+<p class="foot" style="margin:-4px 0 14px">A queda da VM prolongada começou em fevereiro e março, antes do aumento da adesão; outros fatores podem ter contribuído.</p>
+
+<div class="grid2">
+<div class="card"><h2>Hoje no plantão</h2>
+<p class="note">Exemplo ilustrativo de um dia. Este bloco não muda com o filtro de mês.</p>
+<h2 style="font-size:15px">Alertas de evento: agir no turno</h2>
+<ul class="al">
+<li><span class="dot d-bad"></span><span class="txt">Caso novo de PAV no leito 07: abrir investigação com o Serviço de Controle de Infecção Hospitalar (SCIH).</span><span class="stt s-esc">Escalonado</span></li>
+<li><span class="dot d-warn"></span><span class="txt">Leitos 04, 09 e 11 sem higiene oral registrada no turno da noite.</span><span class="stt s-pend">Pendente</span></li>
+<li><span class="dot d-warn"></span><span class="txt">Adesão do turno da noite em 82%, abaixo de 85%: reforçar a passagem de plantão.</span><span class="stt s-ok">Feito</span></li>
+</ul>
+<p class="foot" style="margin-top:6px">No máximo 5 alertas por turno, ordenados por gravidade, para evitar fadiga de alertas. Cada alerta só sai da lista quando a ação é registrada.</p>
+<h2 style="font-size:15px;margin-top:12px">Tendência do mês</h2>
+<ul class="al">
+<li><span class="dot d-good"></span><span class="txt">Densidade acumulada do mês dentro da meta. A tendência olha o mês inteiro, nunca um caso isolado.</span></li>
+</ul>
+<h2 style="margin-top:12px">Adesão por turno hoje</h2>
+<div class="turn"><span>Manhã</span><div class="bar"><span style="width:97%;background:var(--good)"></span></div><b>97%</b></div>
+<div class="turn"><span>Tarde</span><div class="bar"><span style="width:94%;background:var(--good)"></span></div><b>94%</b></div>
+<div class="turn"><span>Noite</span><div class="bar"><span style="width:82%;background:var(--warn)"></span></div><b>82%</b></div>
+<p class="foot">Faixas propostas, a validar com o SCIH: verde a partir de 85%, amarelo de 70% a 84%, vermelho abaixo de 70%.</p>
+</div>
+
+<div class="card"><h2>Como o painel apoia a decisão</h2>
+<div class="tw"><table>
+<tr><th>Quem olha</th><th>Pergunta</th><th>Ação</th></tr>
+<tr><td>Enfermagem (todo turno)</td><td>Quais leitos em VM ainda não tiveram a higiene oral registrada?</td><td>Realizar antes do fim do turno</td></tr>
+<tr><td>Coordenação da UTI</td><td>A adesão está caindo? Em qual turno?</td><td>Reforçar treinamento ou ajustar a escala</td></tr>
+<tr><td>Equipe médica e SCIH</td><td>Surgiu caso novo? A densidade está acima da meta?</td><td>Investigar o caso e revisar condutas</td></tr>
+</table></div>
+<p class="foot" style="margin-top:8px">O painel sinaliza; a decisão continua sendo da equipe.</p>
+</div>
+</div>
+
+<div class="card"><h2>O ciclo do monitoramento online</h2>
+<div class="flow">
+<div class="step"><b>1. Registrar</b>Higiene oral anotada no leito, a cada turno.</div>
+<div class="step"><b>2. Ver online</b>Painel atualizado para toda a equipe.</div>
+<div class="step"><b>3. Decidir</b>Equipe discute alertas e tendências.</div>
+<div class="step"><b>4. Ajustar</b>Rotina, treinamento ou escala corrigidos na hora.</div>
+<div class="step"><b>5. Prevenir</b>Menos falhas hoje, menos casos de PAV amanhã.</div>
+</div>
+<p class="foot" style="margin-top:8px">E o ciclo recomeça no turno seguinte: cada volta melhora a qualidade do dado e da decisão.</p>
+</div>
+
+<div class="card"><h2>Dados necessários e governança</h2>
+<div class="tw"><table>
+<tr><th>Dado</th><th>Fonte</th><th>Frequência</th><th>Responsável</th></tr>
+<tr><td>Higiene oral realizada (por leito)</td><td>Registro à beira do leito</td><td>Todo turno</td><td>Enfermagem</td></tr>
+<tr><td>Pacientes em VM</td><td>Censo da UTI</td><td>Diária</td><td>Enfermagem e coordenação</td></tr>
+<tr><td>Casos novos de PAV</td><td>SCIH (critérios clínicos)</td><td>Diária, com confirmação</td><td>SCIH</td></tr>
+<tr><td>Adesão (realizadas ÷ previstas × 100; 1 higienização por turno por paciente em VM)</td><td>Calculada pelo painel</td><td>Todo turno</td><td>Automático, sem digitação</td></tr>
+<tr><td>Densidade e redução</td><td>Calculadas pelo painel</td><td>Acumulado do mês</td><td>Automático, sem digitação</td></tr>
+<tr><td>Auditoria do registro (observação × registro)</td><td>Amostra de leitos sorteados, todos os turnos</td><td>Semanal</td><td>SCIH</td></tr>
+</table></div>
+<p class="foot" style="margin-top:8px"><b>Finalidade:</b> acompanhar a execução do protocolo e a segurança do paciente. <b>Acesso:</b> lista de leitos só para quem assiste o paciente, identificada por leito e sem nome; gestão vê apenas números agregados. <b>Controle:</b> acessos registrados, em conformidade com a LGPD e o sigilo médico.</p>
+</div>
+
+<p class="foot">Limitações: os dados são fictícios e mensais (a parte diária é ilustrativa); com 2 a 6 casos por mês, pequenas variações são ruído; a queda coincide com a adesão, mas fatores como perfil e gravidade dos pacientes podem ter influenciado. Após a fase 3, quando a UTI controle também receber o protocolo, a comparação passa a ser feita com a linha de base de cada UTI (antes do protocolo).</p>
+</div>
+
+<script>
+const M=["Jan","Fev","Mar","Abr","Mai","Jun","Jul"];
+const D={pd:[168,227,186,260,245,230,255],ca:[4,5,4,3,3,2,3],di:[23.81,22.03,21.51,11.54,12.24,8.70,11.76],dc:[24.24,22.73,21.62,23.53,20.83,21.28,24.00],ad:[null,20,25,70,85,90,92],
+v7i:[35.24,32.40,28.54,24.10,22.50,20.80,21.20],v7c:[35.50,34.80,33.20,35.00,34.20,33.80,35.10],v14i:[16.64,14.68,11.93,10.50,9.40,8.20,8.50],v14c:[16.80,16.20,15.80,16.50,16.00,15.90,16.40]};
+const META=23.81*0.7;
+let sel=6;
+const f=(v,d=2)=>v==null?"N/A":v.toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+let W=640;const L=40,R=64,T=18,B=26;
+const setW=id=>{const el=document.getElementById(id);W=Math.max(320,Math.round(el.clientWidth||640));};
+function line(id,a,b,o){
+ setW(id);
+ const H=o.h||230,n=M.length,x=i=>L+(W-L-R)*i/(n-1),y=v=>T+(H-T-B)*(1-(v-o.min)/(o.max-o.min));
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.label}">`;
+ o.ticks.forEach(t=>{s+=`<line x1="${L}" x2="${W-R}" y1="${y(t)}" y2="${y(t)}" stroke="var(--line)"/><text x="${L-6}" y="${y(t)+4}" text-anchor="end">${t}</text>`});
+ M.forEach((m,i)=>{s+=`<text x="${x(i)}" y="${H-6}" text-anchor="middle" ${i==sel?'style="font-weight:700;fill:var(--text)"':''}>${m}</text>`});
+ s+=`<rect x="${x(sel)-16}" y="${T}" width="32" height="${H-T-B}" fill="var(--soft)" opacity=".7"/>`;
+ s+=`<line x1="${x(1)}" x2="${x(1)}" y1="${T}" y2="${H-B}" stroke="var(--muted)" stroke-dasharray="4 4"/><text x="${x(1)+5}" y="${T+10}">início do protocolo</text>`;
+ if(o.meta)s+=`<line x1="${L}" x2="${W-R}" y1="${y(o.meta)}" y2="${y(o.meta)}" stroke="var(--warn)" stroke-dasharray="6 4" stroke-width="1.5"/><text x="${L+4}" y="${y(o.meta)-5}" style="fill:var(--warn)">meta ${f(o.meta)}</text>`;
+ [[b,"var(--ctrl)"],[a,"var(--acc)"]].forEach(([d,c])=>{
+  s+=`<polyline fill="none" stroke="${c}" stroke-width="2.5" points="${d.map((v,i)=>x(i)+","+y(v)).join(" ")}"/>`;
+  d.forEach((v,i)=>{s+=`<circle cx="${x(i)}" cy="${y(v)}" r="${i==sel?5:3}" fill="${c}"/>`});
+  s+=`<text x="${x(6)+8}" y="${y(d[6])+4}" style="fill:${c};font-weight:700">${f(d[6],o.d)}</text>`});
+ document.getElementById(id).innerHTML=s+"</svg>";
+}
+function bars(id){
+ setW(id);
+ const H=200,n=M.length,bw=(W-L-R)/n,y=v=>T+(H-T-B)*(1-v/100);
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Adesão ao protocolo por mês">`;
+ [0,25,50,75,100].forEach(t=>{s+=`<line x1="${L}" x2="${W-R}" y1="${y(t)}" y2="${y(t)}" stroke="var(--line)"/><text x="${L-6}" y="${y(t)+4}" text-anchor="end">${t}</text>`});
+ [[70,"70% mín."],[85,"85%"]].forEach(([t,l])=>{s+=`<line x1="${L}" x2="${W-R}" y1="${y(t)}" y2="${y(t)}" stroke="var(--muted)" stroke-dasharray="4 4"/><text x="${W-R+4}" y="${y(t)+4}">${l}</text>`});
+ D.ad.forEach((v,i)=>{const cx=L+bw*i+bw/2;
+  if(v==null){s+=`<text x="${cx}" y="${y(0)-6}" text-anchor="middle">N/A</text>`}
+  else{const c=v>=85?"var(--good)":v>=70?"var(--warn)":"var(--bad)";s+=`<rect x="${cx-bw*.3}" y="${y(v)}" width="${bw*.6}" height="${y(0)-y(v)}" rx="3" fill="${c}" ${i==sel?'stroke="var(--text)" stroke-width="2"':''}/><text x="${cx}" y="${y(v)-5}" text-anchor="middle" style="fill:var(--text);font-weight:700">${v}%</text>`}
+  s+=`<text x="${cx}" y="${H-6}" text-anchor="middle" ${i==sel?'style="font-weight:700;fill:var(--text)"':''}>${M[i]}</text>`});
+ document.getElementById(id).innerHTML=s+"</svg>";
+}
+function kpis(){
+ const m=sel,red=(23.81-D.di[m])/23.81*100,a=D.ad[m];
+ const ds=m==0?['','linha de base']:D.di[m]<=META?['good','meta atingida']:['warn','acima da meta'];
+ const as=a==null?['','sem protocolo']:a>=85?['good','dentro do esperado']:a>=70?['warn','atenção']:['bad','abaixo do mínimo'];
+ document.getElementById("kpis").innerHTML=
+ `<div class="kpi"><div class="l">Pacientes-dia em VM</div><div class="v">${D.pd[m]}</div><div class="n">${M[m]}</div></div>
+ <div class="kpi"><div class="l">Casos novos de PAV no mês</div><div class="v">${D.ca[m]}</div><div class="n">UTI com protocolo</div></div>
+ <div class="kpi"><div class="l">Densidade de PAV (por 1.000 pac.-dia)</div><div class="v">${f(D.di[m])}</div><div class="n"><span class="st ${ds[0]}">${ds[1]}</span>${m==0?" (mês de referência)":" · redução de "+f(red,1)+"% vs. jan."}</div></div>
+ <div class="kpi"><div class="l">Diferença para a UTI controle</div><div class="v">${f(D.dc[m]-D.di[m])}</div><div class="n">${m==0?"antes do protocolo: ambas no mesmo patamar":"<span class=\"dif\">casos a menos por 1.000 pac.-dia</span> (controle: "+f(D.dc[m])+")"}</div></div>
+ <div class="kpi"><div class="l">Adesão ao protocolo</div><div class="v">${a==null?"N/A":a+"%"}</div><div class="n"><span class="st ${as[0]}">${as[1]}</span></div></div>`;
+}
+function draw(){
+ document.querySelectorAll("#months button").forEach((b,i)=>b.setAttribute("aria-pressed",i==sel));
+ kpis();
+ line("c1",D.di,D.dc,{min:0,max:30,ticks:[0,10,20,30],meta:META,d:2,label:"Densidade de PAV por mês, com e sem protocolo"});
+ bars("c2");
+ line("c3",D.v7i,D.v7c,{min:15,max:40,ticks:[15,25,35],d:1,h:190,label:"VM acima de 7 dias"});
+ line("c4",D.v14i,D.v14c,{min:0,max:20,ticks:[0,10,20],d:1,h:190,label:"VM acima de 14 dias"});
+}
+const mb=document.getElementById("months");
+M.forEach((m,i)=>{const b=document.createElement("button");b.textContent=m;b.onclick=()=>{sel=i;draw()};mb.appendChild(b)});
+draw();
+let rt;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(draw,150)});
+</script>
+</body>
+</html>

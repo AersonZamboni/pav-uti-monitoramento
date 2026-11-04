@@ -6,7 +6,7 @@
 
 🔗 **[Abrir o painel interativo](https://SEU-USUARIO.github.io/pav-uti-monitoramento/)**
 
-![Tela principal do painel](imagens/tela1.jpg)
+![Tela principal do painel](tela1.jpg)
 
 ---
 
@@ -55,7 +55,7 @@ O resultado depende da adesão **diária**, mas a equipe só via os dados no rel
 
 | Indicadores e tendência | Alertas e decisão | Ciclo e governança |
 |---|---|---|
-| ![Tela 1](imagens/tela1.jpg) | ![Tela 2](imagens/tela2.jpg) | ![Tela 3](imagens/tela3.jpg) |
+| ![Tela 1](tela1.jpg) | ![Tela 2](tela2.jpg) | ![Tela 3](tela3.jpg) |
 
 No painel, você escolhe o mês e vê os indicadores mudarem; os alertas e a adesão por turno são um exemplo ilustrativo de um dia.
 
